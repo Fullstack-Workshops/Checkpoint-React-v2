@@ -30,6 +30,7 @@ class PetList extends React.Component {
       if (filter === 'cats') return pet.species === 'cat';
       if (filter === 'dogs') return pet.species === 'dog';
     })
+    const { handleDelete } = this.props;
     return (
       <>
         <select name="species-filter" value={filter} onChange={this.handleSelected}>
@@ -39,7 +40,7 @@ class PetList extends React.Component {
         </select>
         <div className="pet-list">
           {pets.map((pet) => (
-            <SinglePet key={pet.name} pet={pet}/>
+            <SinglePet key={pet.name} pet={pet} handleDelete={handleDelete}/>
           ))}
         </div>
       </>

@@ -15,6 +15,7 @@ class Root extends React.Component {
       pets: []
     }
     this.fetch = this.fetch.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   async fetch() {
@@ -24,7 +25,7 @@ class Root extends React.Component {
       this.setState({pets: data, loading: false});
     } catch (err) {
       this.setState({loading: false, error: err.message});
-      console.log('Could not fetch pets', err);
+      console.log('Could not fetch pets');
     }
   }
 
@@ -32,14 +33,19 @@ class Root extends React.Component {
     this.fetch();
   }
 
+  handleDelete(id) {
+    this.setState((prevState) => ({pets: prevState.pets.filter((pet) => pet.id !== id)}))
+  }
+
   render() {
     const {loading, error, pets} = this.state;
+    const {handleDelete} = this;
     return (
       <>
         {loading && <div>Loading</div>}
         {error && <div>Error: {error}</div>}
         <h1>Adoption Center</h1>
-        <PetList pets={pets} />
+        <PetList pets={pets} handleDelete={handleDelete} />
       </>
     );
   }
