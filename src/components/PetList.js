@@ -11,11 +11,36 @@ const cody = {
 // PetList only renders one SinglePet. We'd like it to render a list of pets,
 // passed in as props.pets. Don't forget to add a unique key to each one!
 class PetList extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      filter: 'all'
+    }
+    this.handleSelected = this.handleSelected.bind(this);
+  };
+
+  handleSelected(evt) {
+    this.setState({filter: evt.target.value});
+  }
+
   render() {
+    const { filter } = this.state;
+    const pets = this.props.pets.filter((pet) => {
+      if (filter === 'all') return pet;
+      if (filter === 'cats') return pet.species === 'cat';
+      if (filter === 'dogs') return pet.species === 'dog';
+    })
     return (
       <>
+        <select name="species-filter" value={filter} onChange={this.handleSelected}>
+          <option>all</option>
+          <option>cats</option>
+          <option>dogs</option>
+        </select>
         <div className="pet-list">
-          <SinglePet pet={cody} />
+          {pets.map((pet) => (
+            <SinglePet key={pet.name} pet={pet}/>
+          ))}
         </div>
       </>
     );
